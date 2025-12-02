@@ -106,7 +106,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
       if (mode === 'signup') {
         const { user, error: authError } = await AuthService.signUpWithEmail(email, password, displayName);
         if (authError) {
-          setError(authError.message);
+          // 에러 메시지를 한국어로 번역
+          console.error('Signup error:', authError);
+          let errorMessage = authError.message;
+          
+          if (authError.message.includes('User already registered') || 
+              authError.message.includes('already been registered')) {
+            errorMessage = lang === 'ko' 
+              ? '이미 등록된 이메일입니다. 로그인을 시도해주세요.' 
+              : 'Email already registered. Please try logging in.';
+          } else if (authError.message.includes('Password should be')) {
+            errorMessage = lang === 'ko'
+              ? '비밀번호는 최소 6자 이상이어야 합니다.'
+              : 'Password should be at least 6 characters.';
+          }
+          
+          setError(errorMessage);
         } else {
           alert(text.signupSuccess);
           onSuccess();
@@ -115,7 +130,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
       } else {
         const { user, error: authError } = await AuthService.signInWithEmail(email, password);
         if (authError) {
-          setError(authError.message);
+          // 에러 메시지를 한국어로 번역
+          console.error('Login error:', authError);
+          let errorMessage = authError.message;
+          
+          if (authError.message.includes('Invalid login credentials') || 
+              authError.message.includes('Invalid email or password')) {
+            errorMessage = lang === 'ko' 
+              ? '이메일 또는 비밀번호가 올바르지 않습니다.' 
+              : 'Invalid email or password.';
+          } else if (authError.message.includes('Email not confirmed')) {
+            errorMessage = lang === 'ko'
+              ? '이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.'
+              : 'Email not confirmed. Please check your email.';
+          } else if (authError.message.includes('User not found')) {
+            errorMessage = lang === 'ko'
+              ? '등록되지 않은 이메일입니다. 회원가입을 먼저 진행해주세요.'
+              : 'Email not registered. Please sign up first.';
+          }
+          
+          setError(errorMessage);
+        } else if (!user) {
+          setError(lang === 'ko' 
+            ? '등록되지 않은 이메일입니다. 회원가입을 먼저 진행해주세요.' 
+            : 'Email not registered. Please sign up first.');
         } else {
           onSuccess();
           handleClose();
@@ -228,7 +266,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           </Button>
         </form>
 
-        <div className="relative my-6">
+        {/* Google 로그인은 Supabase에서 Google 프로바이더를 활성화한 후 사용 가능합니다 */}
+        {/* <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-border"></div>
           </div>
@@ -249,7 +288,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
           </svg>
           {text.googleBtn}
-        </button>
+        </button> */}
 
         <div className="mt-6 text-center text-sm">
           <span className="text-muted-foreground">
