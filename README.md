@@ -46,24 +46,23 @@ All tables have RLS (Row Level Security) enabled with public read/write access.
 
 ## Authentication Setup
 
-This app supports email and Google OAuth authentication via Supabase Auth.
+This app supports email and Kakao OAuth authentication via Supabase Auth.
 
-### Enable Google OAuth
+### Enable Kakao OAuth
 
 1. Go to your Supabase project dashboard
 2. Navigate to **Authentication** > **Providers**
-3. Enable **Google** provider
-4. Follow the instructions to set up Google OAuth:
-   - Create a project in [Google Cloud Console](https://console.cloud.google.com/)
-   - Enable Google+ API
-   - Create OAuth 2.0 credentials
-   - Add authorized redirect URIs from Supabase
-   - Copy Client ID and Client Secret to Supabase settings
+3. Enable **Kakao** provider
+4. Follow the instructions to set up Kakao OAuth:
+   - Create an app in [Kakao Developers](https://developers.kakao.com/)
+   - Get your REST API Key and JavaScript Key
+   - Configure redirect URIs in Kakao settings
+   - Add Kakao Client ID and Client Secret to Supabase
 
 ### Features
 
 - **Email/Password signup and login**
-- **Google OAuth login**
+- **Kakao OAuth login** - 원클릭 카카오 로그인
 - **Protected routes**: Only authenticated users can:
   - Register new apps
   - Create help requests

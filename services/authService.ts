@@ -69,10 +69,10 @@ export const signInWithEmail = async (email: string, password: string): Promise<
   };
 };
 
-// 구글로 로그인
-export const signInWithGoogle = async (): Promise<{ error: AuthError | null }> => {
+// 카카오로 로그인
+export const signInWithKakao = async (): Promise<{ error: AuthError | null }> => {
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
+    provider: 'kakao',
     options: {
       redirectTo: `${window.location.origin}`
     }
